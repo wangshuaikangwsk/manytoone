@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exit.manytoone.mapper.StudentMapper">
+
+    <select id="getMapStudentList" resultType="map" parameterType="map">
+        select s.*,c.cname from t_student s left join t_class c on s.cid = c.cid
+        <where>
+            <if test="mohu !=null and mohu !=''">
+                and s.name like concat('%',#{mohu},'%')
+            </if>
+        </where>
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="getCount" resultType="int" parameterType="map">
+        select count(*) from t_student s
+        <where>
+            <if test="mohu !=null and mohu !=''">
+                and s.name like concat('%',#{mohu},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getClazzList" resultType="map">
+        select * from t_class
+    </select>
+
+    <insert id="addStudentList" parameterType="com.exit.manytoone.entity.Student">
+        insert into t_student(name,age,cid,address) values(#{name},#{age},#{cid},#{address})
+    </insert>
+
+    <delete id="deleteplsc" parameterType="string">
+        delete from t_student where id in(${value})
+    </delete>
+
+    <select id="getStudentById" parameterType="com.exit.manytoone.entity.Student" resultType="com.exit.manytoone.entity.Student">
+        select * from t_student where id= #{id}
+    </select>
+
+    <update id="updateStudentList" parameterType="com.exit.manytoone.entity.Student" >
+        update t_student set name=#{name},age=#{age},cid=#{cid},address=#{address} where id= #{id}
+    </update>
+
+</mapper>
